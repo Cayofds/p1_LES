@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio360 - Login</title>
+    <link rel="stylesheet" href="../css/views/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2 class="auth-title">Login</h2>
+
+        <form class="auth-form" id="loginForm">
+            <label for="usuario">Usuário</label>
+            <input type="text" id="usuario" class="auth-input" required>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" class="auth-input" required>
+
+            <button type="submit" class="auth-button">Entrar</button>
+        </form>
+
+        <p class="auth-footer">
+            Não tem uma conta? <a href="./telaCadastro.html">Cadastre-se</a>
+        </p>
+
+        <p class="auth-footer">
+            Esqueceu a senha? <a href="./telaRecuperarSenha.html">Recuperar acesso</a>
+        </p>
+    </div>
+    <script src="../js/login.js"></script>
+</body>
+</html>

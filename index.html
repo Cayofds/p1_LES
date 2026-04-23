@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio360</title>
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+<body>
+    <script>
+        const usuarioId = localStorage.getItem('usuarioId');
+
+        if (usuarioId) {
+            window.location.href = './view/telaHome.html';
+        } else {
+            window.location.href = './view/telaLogin.html';
+        }
+    </script>
+</body>
+</html>
