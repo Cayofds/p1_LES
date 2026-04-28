@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Perfil</title>
+  <link rel="stylesheet" href="../css/views/register.css">
+  <style>
+    .profile-box { max-width:820px; margin:36px auto; display:flex; gap:24px; align-items:flex-start; }
+    .pf-avatar { width:200px; height:200px; border-radius:12px; background:#222; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .pf-avatar img { width:100%; height:100%; object-fit:cover; }
+    .pf-info { flex:1; color:var(--cor-texto); }
+    .pf-info h2 { color:var(--cor-branco); margin-bottom:6px }
+    .pf-row { margin-bottom:10px; color:var(--cor-texto-suave); }
+    .pf-label { display:inline-block; width:140px; font-weight:600; color:var(--cor-white); }
+    .actions { margin-top:18px; }
+    .btn-secondary { margin-right:8px; }
+    .error-message { color: #ff6b6b; padding: 12px; background: #222; border-radius: 6px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="profile-container"></div>
+  </div>
+
+  <script>
+    // Função auxiliar para obter valor seguro de um objeto
+    function colVal(arr, col) {
+      return (arr && arr[col]) ? arr[col] : null;
+    }
+
+    // Função para obter o rótulo do nível
+    function getNivelLabel(nivel) {
+      const nivelMap = {
+        0: 'Administrador',
+        1: 'Visitante',
+        2: 'Criador',
+        3: 'Empresarial'
+      };
+      return nivelMap[nivel] || 'Desconhecido';
+    }
+
+    // Função para carregar dados do usuário
+    async function loadUserProfile() {
+      try {
+        // Faz uma requisição para obter os dados do usuário
+        const response = await fetch('../api/getUserProfile.php');
+        
+        if (!response.ok) {
+          if (response.status === 401) {
+            window.location.href = './telaLogin.php';
+            return;
+          }
+          throw new Error('Erro ao carregar perfil');
+        }
+
+        const data = await response.json();
+        
+        if (!data.user) {
+          document.getElementById('profile-container').innerHTML = 
+            '<p class="error-message">Usuário não encontrado.</p>';
+          return;
+        }
+
+        renderProfile(data.user, data.availableColumns);
+      } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        document.getElementById('profile-container').innerHTML = 
+          `<p class="error-message">Erro ao carregar perfil: ${error.message}</p>`;
+      }
+    }
+
+    // Função para renderizar o perfil
+    function renderProfile(user, availableColumns) {
+      const nivel = user.nivel ? parseInt(user.nivel) : null;
+      const nivelLabel = getNivelLabel(nivel);
+
+      // Procura coluna de imagem
+      const possibleImgCols = ['avatar', 'foto', 'foto_perfil', 'imagem', 'img', 'profile_image'];
+      const imgCol = possibleImgCols.find(col => availableColumns.includes(col));
+
+      // Prepara data URI da imagem
+      let imgDataUri = null;
+      if (imgCol && user[imgCol]) {
+        imgDataUri = user[imgCol]; // Já vem em formato data URI do backend
+      }
+
+      // Constrói HTML do perfil
+      let profileHTML = `
+        <div class="profile-box">
+          <div class="pf-avatar">
+            ${imgDataUri 
+              ? `<img src="${imgDataUri}" alt="Avatar">` 
+              : '<div style="text-align:center; padding:10px; color:var(--cor-texto-suave)">Sem foto</div>'
+            }
+          </div>
+
+          <div class="pf-info">
+            <h2>${escapeHtml(user.usuario || 'Usuário')}</h2>
+            <div class="pf-row"><strong>Nível:</strong> ${nivelLabel}</div>
+            
+            ${availableColumns.includes('nome_real') && user.nome_real 
+              ? `<div class="pf-row"><strong>Nome real:</strong> ${escapeHtml(user.nome_real)}</div>` 
+              : ''
+            }
+
+            ${user.email 
+              ? `<div class="pf-row"><strong>Email:</strong> ${escapeHtml(user.email)}</div>` 
+              : ''
+            }
+
+            ${nivel === 2 && availableColumns.includes('portfolio') && user.portfolio
+              ? `<div class="pf-row"><strong>Portfolio:</strong> ${escapeHtml(user.portfolio)}</div>`
+              : ''
+            }
+
+            ${nivel === 3 && availableColumns.includes('nome_empresa') && user.nome_empresa
+              ? `<div class="pf-row"><strong>Empresa:</strong> ${escapeHtml(user.nome_empresa)}</div>`
+              : ''
+            }
+
+            ${nivel === 3 && availableColumns.includes('cnpj') && user.cnpj
+              ? `<div class="pf-row"><strong>CNPJ:</strong> ${escapeHtml(user.cnpj)}</div>`
+              : ''
+            }
+
+            ${availableColumns.includes('telefone') && user.telefone
+              ? `<div class="pf-row"><strong>Telefone:</strong> ${escapeHtml(user.telefone)}</div>`
+              : ''
+            }
+
+            <div class="actions">
+              <a class="btn-secondary" href="./telaMeusPosts.php">Meus posts</a>
+              <a class="auth-button" href="./telaHome.php">Voltar</a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('profile-container').innerHTML = profileHTML;
+    }
+
+    // Função para escapar HTML e evitar XSS
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // Carrega o perfil quando a página for carregada
+    document.addEventListener('DOMContentLoaded', loadUserProfile);
+  </script>
+</body>
+</html>

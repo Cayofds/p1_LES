@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Posts - Studio 360</title>
+  <link rel="stylesheet" href="../css/views/home.css">
+  <style>
+    .loading { text-align: center; padding: 40px; color: var(--cor-texto); }
+    .error-message { color: #ff6b6b; padding: 16px; background: #222; border-radius: 6px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+    <div id="topo"></div>
+    <header>
+        <div class="container">
+            <h1 class="logo">Studio 360</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="./telaHome.html">Home</a></li>
+                    <li><a href="./telaNovoPost.html">Novo post</a></li>
+                    <li><span id="user-greeting">Olá, Você</span></li>
+                    <li><a style="color: var(--cor-verde)" href="">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="janela">
+        <h2>Meus Trabalhos</h2>
+        <div class="cards-container" id="posts-container">
+            <div class="loading">Carregando seus posts...</div>
+        </div>
+    </section>
+
+    <script>
+        // Função para escapar HTML e evitar XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Função para carregar dados do usuário e posts
+        async function loadUserPostsData() {
+            try {
+                // Requisição para obter dados do usuário e seus posts
+                const response = await fetch('../api/getUserPosts.html');
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = './telaLogin.html';
+                        return;
+                    }
+                    throw new Error('Erro ao carregar posts');
+                }
+
+                const data = await response.json();
+                
+                // Atualiza saudação do usuário
+                const displayName = escapeHtml(data.userName || 'Você');
+                document.getElementById('user-greeting').textContent = `Olá, ${displayName}`;
+
+                // Renderiza os posts
+                renderPosts(data.posts);
+            } catch (error) {
+                console.error('Erro ao carregar posts:', error);
+                const container = document.getElementById('posts-container');
+                container.innerHTML = `<p class="error-message">Erro ao carregar seus posts: ${error.message}</p>`;
+            }
+        }
+
+        // Função para renderizar os posts
+        function renderPosts(posts) {
+            const container = document.getElementById('posts-container');
+
+            if (!posts || posts.length === 0) {
+                container.innerHTML = '<p>Você ainda não publicou nenhum post.</p>';
+                return;
+            }
+
+            let postsHTML = '';
+
+            posts.forEach((post, index) => {
+                const title = escapeHtml(post.titulo || '');
+                const categoria = escapeHtml(post.categoria || '');
+                const displayName = escapeHtml(post.nome_usuario || 'Usuário');
+
+                // Imagem de perfil
+                let perfilSrc = '../img/teste-Perfil.png';
+                if (post.foto_perfil) {
+                    perfilSrc = post.foto_perfil; // Já vem em formato data URI do backend
+                }
+
+                // Imagem de fundo do post
+                let bgStyle = `background-image: url('https://picsum.photos/600/400?random=${(post.id % 100)}');`;
+                if (post.img) {
+                    bgStyle = `background-image: url('${post.img}'); background-size: cover; background-position: center;`;
+                }
+
+                postsHTML += `
+                    <div class="card" style="${bgStyle}">
+                        <div class="card-content">
+                            <h2 class="card-title">${title}</h2>
+                            <p class="card-category">Categoria: ${categoria || '—'}</p>
+
+                            <div class="profile">
+                                <img src="${perfilSrc}" class="foto-usuario-post" alt="Usuário">
+                                <span class="profile-name">${displayName}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = postsHTML;
+        }
+
+        // Carrega os dados quando a página for carregada
+        document.addEventListener('DOMContentLoaded', loadUserPostsData);
+    </script>
+</body>
+</html>
