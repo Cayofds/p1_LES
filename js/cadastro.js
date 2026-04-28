@@ -6,37 +6,45 @@ form.addEventListener('submit', async (e) => {
     const usuario = document.getElementById('usuario').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
+    const senhaConfirm = document.getElementById('senha_confirm').value;
+    const foto = document.getElementById('foto').files[0];
 
-    // tipo do cadastro (define no HTML)
+    if (senha !== senhaConfirm) {
+        alert('As senhas não coincidem!');
+        return;
+    }
+
     let tipo = document.body.dataset.tipo;
-    const nivel = null;
 
+    let nivel = null;
     let cnpj = null;
     let nome_real = null;
 
     if (tipo === 'empresa') {
         nivel = 3;
-        cnpj = document.getElementById('cnpj').value;
-    }else if (tipo === 'criador') {
+        cnpj = document.getElementById('cnpj')?.value;
+    } else if (tipo === 'criador') {
         nivel = 2;
-        nome_real = document.getElementById('nome_real').value;
-    }else nivel = 1;
+        nome_real = document.getElementById('nome_real')?.value;
+    } else {
+        nivel = 1;
+    }
+
+    const formData = new FormData();
+    formData.append('acao', 'cadastro');
+    formData.append('usuario', usuario);
+    formData.append('email', email);
+    formData.append('senha', senha);
+    formData.append('nivel', nivel);
+
+    if (cnpj) formData.append('cnpj', cnpj);
+    if (nome_real) formData.append('nome_real', nome_real);
+    if (foto) formData.append('foto', foto);
 
     try {
-        const res = await fetch('http://localhost/seu_projeto/api.php', {
+        const res = await fetch('http://localhost/p1_LES/api.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                acao: 'cadastro',
-                usuario,
-                email,
-                senha,
-                nivel,
-                cnpj,
-                nome_real
-            })
+            body: formData
         });
 
         const data = await res.json();
