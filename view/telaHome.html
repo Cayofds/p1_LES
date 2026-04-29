@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio360</title>
-    <link rel="stylesheet" href="../css/views/home.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio 360</title>
+<link rel="stylesheet" href="../css/views/home.css">
 </head>
+
 <body>
-    <script src="../js/veriLogin.js"></script>
+
+    <div id="topo"></div>
+
+    <header>
+        <div class="container">
+            <h1 class="logo">Studio 360</h1>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#topo">Home</a></li>
+                    <!-- JS vai completar aqui -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="janela">
+        <h2>Trabalhos dos Usuários</h2>
+        <div id="postsContainer" class="cards-container"></div>
+    </section>
+
+    <script src="../js/home.js"></script>
+
 </body>
 </html>

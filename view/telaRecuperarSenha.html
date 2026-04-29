@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Recuperar Senha</title>
+<link rel="stylesheet" href="../css/views/auth.css">
+</head>
+
+<body>
+<div class="auth-container">
+
+    <h2 class="auth-title">Recuperar Senha</h2>
+
+    <p id="mensagem" class="recover-message" style="display:none;"></p>
+
+    <form id="formStep1" class="auth-form">
+        <label>Usuário</label>
+        <input type="text" id="usuario" class="auth-input" required>
+        <button class="auth-button">Gerar código</button>
+    </form>
+
+    <div id="step2" style="display:none;">
+        <div class="recover-card">
+            <p class="recover-info">
+                Código gerado:
+                <span id="codigoGerado" class="recover-highlight"></span>
+            </p>
+
+            <form id="formStep2" class="auth-form">
+                <label>Digite o código</label>
+                <input type="text" id="codigoDigitado" class="auth-input" maxlength="6" required>
+                <button class="auth-button">Validar código</button>
+            </form>
+        </div>
+    </div>
+
+    <form id="formStep3" class="auth-form" style="display:none;">
+        <label>Nova senha</label>
+        <input type="password" id="novaSenha" class="auth-input" required>
+
+        <label>Confirmar senha</label>
+        <input type="password" id="confirmarSenha" class="auth-input" required>
+
+        <button class="auth-button">Salvar nova senha</button>
+    </form>
+
+    <p class="auth-footer">
+        <a href="./telaLogin.html">Voltar para login</a>
+    </p>
+
+</div>
+
+<script src="../js/recuperar.js"></script>
+</body>
+</html>

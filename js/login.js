@@ -23,8 +23,9 @@ form.addEventListener('submit', async (e) => {
 
         if (data.success) {
             localStorage.setItem('usuarioId', data.usuarioId);
+            localStorage.setItem('nivel', data.nivel);
+            localStorage.setItem('usuarioNome', data.usuario);
 
-            alert('Login realizado com sucesso!');
             window.location.href = './telaHome.html';
         } else {
             alert('Usuário ou senha inválidos');
