@@ -71,7 +71,7 @@ document.getElementById('formStep3').addEventListener('submit', async (e) => {
             mostrarMensagem('Senha alterada com sucesso!', 'success');
 
             setTimeout(() => {
-                window.location.href = './telaLogin.html';
+                window.location.href = '../login/telaLogin.html';
             }, 1500);
         } else {
             mostrarMensagem(data.error || 'Erro ao alterar senha', 'error');

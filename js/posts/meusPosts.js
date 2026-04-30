@@ -1,9 +1,21 @@
-// proteção
+// ================= PROTEÇÃO =================
 if (!localStorage.getItem('usuarioId')) {
-    window.location.href = './telaLogin.html';
+    window.location.href = '../login/telaLogin.html';
 }
 
-// carregar posts
+// ================= ESCAPE (FALTAVA) =================
+function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    }[m]));
+}
+
+// ================= CARREGAR POSTS =================
 async function loadUserPostsData() {
     try {
 
@@ -17,6 +29,8 @@ async function loadUserPostsData() {
         });
 
         const data = await response.json();
+
+        console.log('API:', data); // 🔍 DEBUG
 
         if (!data.success) {
             throw new Error('Erro ao carregar posts');
@@ -35,6 +49,7 @@ async function loadUserPostsData() {
     }
 }
 
+// ================= RENDER =================
 function carregarPosts(posts) {
     const container = document.getElementById('posts-container');
 
@@ -47,9 +62,9 @@ function carregarPosts(posts) {
 
     posts.forEach(post => {
 
-        const title = escapeHtml(post.titulo);
-        const categoria = escapeHtml(post.categoria);
-        const nome = escapeHtml(post.usuario);
+        const title = escapeHtml(post.titulo || 'Sem título');
+        const categoria = escapeHtml(post.categoria || '-');
+        const nome = escapeHtml(post.usuario || 'Usuário');
 
         const perfilSrc = post.foto || '../img/default.png';
 
@@ -61,7 +76,7 @@ function carregarPosts(posts) {
             <div class="card" style="${bg}">
                 <div class="card-content">
                     <h2>${title}</h2>
-                    <p>Categoria: ${categoria || '-'}</p>
+                    <p>Categoria: ${categoria}</p>
 
                     <div class="profile">
                         <img src="${perfilSrc}" class="foto-usuario-post">
@@ -75,4 +90,5 @@ function carregarPosts(posts) {
     container.innerHTML = html;
 }
 
+// ================= INIT =================
 document.addEventListener('DOMContentLoaded', loadUserPostsData);

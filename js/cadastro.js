@@ -51,7 +51,7 @@ form.addEventListener('submit', async (e) => {
 
         if (data.success) {
             alert('Cadastro realizado!');
-            window.location.href = './telaLogin.html';
+            window.location.href = '../login/telaLogin.html';
         } else {
             alert('Erro ao cadastrar');
         }

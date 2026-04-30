@@ -60,15 +60,15 @@ const nome = localStorage.getItem('usuarioNome') || 'Usuário';
 
 if (!usuarioId) {
     nav.innerHTML += `
-        <li><a href="./telaLogin.html">Login</a></li>
+        <li><a href="./login/telaLogin.html">Login</a></li>
     `;
 }
 
 if (usuarioId) {
     if (nivel == 2) {
         nav.innerHTML += `
-            <li><a href="./telaNovoPost.html">Novo post</a></li>
-            <li><a href="./telaMeusPosts.html">Meus posts</a></li>
+            <li><a href="./posts/telaNovoPost.html">Novo post</a></li>
+            <li><a href="./posts/telaMeusPosts.html">Meus posts</a></li>
         `;
     }
 
@@ -86,6 +86,6 @@ if (usuarioId) {
 document.addEventListener('click', (e) => {
     if (e.target.id === 'logoutBtn') {
         localStorage.clear();
-        window.location.href = './telaLogin.html';
+        window.location.href = './login/telaLogin.html';
     }
 });

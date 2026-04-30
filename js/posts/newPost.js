@@ -1,6 +1,6 @@
 // proteção
 if (!localStorage.getItem('usuarioId')) {
-    window.location.href = './telaLogin.html';
+    window.location.href = '../login/telaLogin.html';
   }
   
   // escape (mantido)
@@ -143,7 +143,7 @@ if (!text) return '';
       mostrarMensagem('Post criado com sucesso!', 'success');
   
       setTimeout(() => {
-        window.location.href = './telaHome.html';
+        window.location.href = '../telaHome.html';
       }, 1500);
   
     } catch (err) {

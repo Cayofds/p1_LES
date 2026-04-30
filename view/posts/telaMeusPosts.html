@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio360 - Meus Posts</title>
+
+  <link rel="stylesheet" href="../../css/views/home.css">
+
+  <style>
+    .loading { text-align: center; padding: 40px; color: var(--cor-texto); }
+    .error-message { color: #ff6b6b; padding: 16px; background: #222; border-radius: 6px; margin: 20px 0; }
+  </style>
+</head>
+
+<body>
+
+<div id="topo"></div>
+
+<header>
+  <div class="container">
+    <h1 class="logo">Studio 360</h1>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../telaHome.html">Home</a></li>
+        <li><a href="./telaNovoPost.html">Novo post</a></li>
+
+        <li><span id="user-greeting">Olá, Usuário</span></li>
+
+        <li>
+          <a href="#" id="logoutBtn" style="color: var(--cor-verde)">Sair</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="janela">
+  <h2>Meus Trabalhos</h2>
+
+  <div class="cards-container" id="posts-container">
+    <div class="loading">Carregando seus posts...</div>
+  </div>
+</section>
+    
+<script src="../../js/posts/meusPosts.js"></script>
+
+</body>
+</html>

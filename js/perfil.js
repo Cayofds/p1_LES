@@ -12,7 +12,7 @@ async function carregarPerfil() {
     const usuarioId = localStorage.getItem('usuarioId');
 
     if (!usuarioId) {
-        window.location.href = './telaLogin.html';
+        window.location.href = './login/telaLogin.html';
         return;
     }
 
@@ -60,7 +60,7 @@ async function carregarPerfil() {
                     ` : ''}
 
                     <div class="actions">
-                        <a class="btn-secondary" href="./telaMeusPosts.html">Meus posts</a>
+                        <a class="btn-secondary" href="./posts/telaMeusPosts.html">Meus posts</a>
                         <a class="auth-button" href="./telaHome.html">Voltar</a>
                     </div>
                 </div>
