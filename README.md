@@ -27,8 +27,57 @@ git clone https://github.com/Cayofds/p1_LES
 
 Após abrir a pasta do projeto, clique em Executar e iniciar depuração na página index.html
 
-Estrutura de Pastas
-
+Estrutura de Pastas:
+P1_LES/
+│
+├── css/
+│   └── views/
+│       ├── auth.css
+│       ├── choice.css
+│       ├── home.css
+│       ├── perfil.css
+│       ├── register.css
+│       ├── global.css
+│       └── variaveis.css
+│
+├── js/
+│   ├── posts/
+│   │   ├── meusPosts.js
+│   │   └── newPost.js
+│   │
+│   ├── verificacoes/
+│   │   ├── verifica.js
+│   │   └── veriLogin.js
+│   │
+│   ├── cadastro.js
+│   ├── home.js
+│   ├── login.js
+│   ├── perfil.js
+│   └── recuperar.js
+│
+├── view/
+│   ├── cadastro/
+│   │   ├── cadastroCriador.html
+│   │   ├── cadastroEmpresa.html
+│   │   ├── cadastroVisitante.html
+│   │   └── telaCadastro.html
+│   │
+│   ├── login/
+│   │   ├── telaLogin.html
+│   │   └── telaRecuperarSenha.html
+│   │
+│   ├── posts/
+│   │   ├── telaMeusPosts.html
+│   │   └── telaNovoPost.html
+│   │
+│   ├── telaHome.html
+│   └── telaPerfil.html
+│
+├── api.php
+├── index.html
+├── LICENSE
+├── README.md
+└── studio360.sql
 
 
 Licença e Autores:
