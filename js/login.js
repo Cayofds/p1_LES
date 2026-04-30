@@ -26,7 +26,7 @@ form.addEventListener('submit', async (e) => {
             localStorage.setItem('nivel', data.nivel);
             localStorage.setItem('usuarioNome', data.usuario);
 
-            window.location.href = './telaHome.html';
+            window.location.href = '../telaHome.html';
         } else {
             alert('Usuário ou senha inválidos');
         }
