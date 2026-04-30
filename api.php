@@ -241,23 +241,47 @@ if ($acao === 'get_categorias') {
 
 // ================= CRIAR POST =================
 if ($acao === 'create_post') {
-    $titulo = $_POST['titulo'];
-    $id_categoria = $_POST['id_categoria'];
-    $usuarioId = $_POST['usuarioId'];
+
+    $titulo = $_POST['titulo'] ?? '';
+    $id_categoria = $_POST['id_categoria'] ?? 0;
+    $usuarioId = $_POST['usuarioId'] ?? 0;
+
+    if (!$titulo || !$id_categoria || !$usuarioId) {
+        echo json_encode([
+            "success" => false,
+            "error" => "Dados incompletos"
+        ]);
+        exit;
+    }
 
     $img = null;
-    if (isset($_FILES['img'])) {
+
+    if (isset($_FILES['img']) && $_FILES['img']['tmp_name']) {
         $img = file_get_contents($_FILES['img']['tmp_name']);
     }
 
-    $stmt = $conn->prepare("INSERT INTO posts (titulo, id_categoria, id_usuario, img) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("
+        INSERT INTO posts (titulo, id_categoria, id_usuario, img)
+        VALUES (?, ?, ?, ?)
+    ");
+
+    $null = NULL;
     $stmt->bind_param("siib", $titulo, $id_categoria, $usuarioId, $null);
 
     if ($img) {
         $stmt->send_long_data(3, $img);
     }
 
-    echo json_encode(["success" => $stmt->execute()]);
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "error" => "Erro ao inserir"
+        ]);
+    }
+
+    exit;
 }
 
 $conn->close();

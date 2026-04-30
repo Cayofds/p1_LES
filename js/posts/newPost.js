@@ -135,6 +135,8 @@ if (!text) return '';
       });
   
       const data = await res.json();
+      // const text = await res.text();
+      // console.log(text);
   
       if (!data.success) {
         throw new Error(data.error || 'Erro ao criar post');
